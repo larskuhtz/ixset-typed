@@ -124,7 +124,9 @@ module Data.IxSet.Typed
      ixGen,
      -- ** TH derivation of indices
      noCalcs,
+#if ! MIN_VERSION_template_haskell(2,17,0)
      inferIxSet,
+#endif
 
      -- * Changes to set
      IndexOp,
@@ -525,6 +527,9 @@ ixGen _proxy = ixFun (flatten :: a -> [ix])
 noCalcs :: t -> ()
 noCalcs _ = ()
 
+
+#if ! MIN_VERSION_template_haskell(2,17,0)
+
 -- | Template Haskell helper function for automatically building an
 -- 'Indexable' instance from a data type, e.g.
 --
@@ -613,6 +618,7 @@ inferIxSet ixset typeName calName entryPoints
 tyVarBndrToName :: TyVarBndr -> Name
 tyVarBndrToName (PlainTV nm) = nm
 tyVarBndrToName (KindedTV nm _) = nm
+#endif
 
 -- | Generically traverses the argument to find all occurences of
 -- values of type @b@ and returns them as a list.
